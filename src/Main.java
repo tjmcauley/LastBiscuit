@@ -18,14 +18,17 @@ public class Main {
         final String PLAYER_TURN = "Player Turn: ";
         final String PLAYER_1_WINNER = "Winner is player 1";
         final String PLAYER_2_WINNER = "Winner is player 2";
+        final String SKIP_USED = "Sorry you've used your skip";
 
         final int BARREL_1_QUANTITY = 6;
         final int BARREL_2_QUANTITY = 8;
-        final int INITIAL_PLAYER = 1;
 
         //Default values of barrels and player
         int barrel1 = BARREL_1_QUANTITY;
         int barrel2 = BARREL_2_QUANTITY;
+
+        boolean player1SkipUsed = false;
+        boolean player2SkipUsed = false;
 
         boolean isPlayer1 = true;
 
@@ -48,45 +51,54 @@ public class Main {
                 do {
                     System.out.println(BARREL_CHOICE);
                     barrelSelect = userIn.nextLine();
-                } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both"));
+                } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both") && !barrelSelect.equals("skip"));
 
-                System.out.println(BISCUIT_QUANTITY);
-                while (!userIn.hasNextInt()) {
-                    System.out.println(INTEGER_ERROR);
-                    userIn.next();
-                }
-                int biscuitSelect = userIn.nextInt();
+                if (barrelSelect.equals("skip") && (isPlayer1 && player1SkipUsed) || (!isPlayer1 && player2SkipUsed)) {
+                    System.out.println(SKIP_USED);
+                } else if (barrelSelect.equals("skip") && isPlayer1) {
+                    validInput = true;
+                    player1SkipUsed = true;
+                } else if (barrelSelect.equals("skip") && !isPlayer1) {
+                    validInput = true;
+                    player2SkipUsed = true;
+                } else {
+                    System.out.println(BISCUIT_QUANTITY);
+                    while (!userIn.hasNextInt()) {
+                        System.out.println(INTEGER_ERROR);
+                        userIn.next();
+                    }
+                    int biscuitSelect = userIn.nextInt();
 
-                switch (barrelSelect) {
-                    case ("one"):
-                        if (biscuitSelect <= barrel1 && biscuitSelect > 0) {
-                            barrel1 -= biscuitSelect;
-                            validInput = true;
-                        } else {
-                            System.out.println(ILLEGAL_NUMBER);
-                        }
-                        break;
-                    case ("two"):
-                        if (biscuitSelect <= barrel2 && biscuitSelect > 0) {
-                            barrel2 -= biscuitSelect;
-                            validInput = true;
-                        } else {
-                            System.out.println(ILLEGAL_NUMBER);
-                        }
-                        break;
-                    case ("both"):
-                        if (biscuitSelect <= barrel1 && biscuitSelect <= barrel2 && biscuitSelect > 0) {
-                            barrel1 -= biscuitSelect;
-                            barrel2 -= biscuitSelect;
-                            validInput = true;
-                        } else {
-                            System.out.println(ILLEGAL_NUMBER);
-                        }
-                        break;
-                    default:
-                        validInput = false;
+                    switch (barrelSelect) {
+                        case ("one"):
+                            if (biscuitSelect <= barrel1 && biscuitSelect > 0) {
+                                barrel1 -= biscuitSelect;
+                                validInput = true;
+                            } else {
+                                System.out.println(ILLEGAL_NUMBER);
+                            }
+                            break;
+                        case ("two"):
+                            if (biscuitSelect <= barrel2 && biscuitSelect > 0) {
+                                barrel2 -= biscuitSelect;
+                                validInput = true;
+                            } else {
+                                System.out.println(ILLEGAL_NUMBER);
+                            }
+                            break;
+                        case ("both"):
+                            if (biscuitSelect <= barrel1 && biscuitSelect <= barrel2 && biscuitSelect > 0) {
+                                barrel1 -= biscuitSelect;
+                                barrel2 -= biscuitSelect;
+                                validInput = true;
+                            } else {
+                                System.out.println(ILLEGAL_NUMBER);
+                            }
+                            break;
+                        default:
+                            validInput = false;
+                    }
                 }
-                userIn.nextLine();
             } while (!validInput);
 
             System.out.println(REMAINING_BARREL_1 + barrel1);
