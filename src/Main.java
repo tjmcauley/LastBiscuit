@@ -26,101 +26,79 @@ public class Main {
         //Default values of barrels and player
         int barrel1 = BARREL_1_QUANTITY;
         int barrel2 = BARREL_2_QUANTITY;
-        int player = INITIAL_PLAYER;
+
+        boolean isPlayer1 = true;
 
         //Scanner that will read both player's inputs
         Scanner userIn = new Scanner(System.in);
-        String barrelSelect;
-        int biscuitSelect = 0;
-        boolean isBarrel1 = false;
-        boolean isBarrel2 = false;
+
+        System.out.println(REMAINING_BARREL_1 + barrel1);
+        System.out.println(REMAINING_BARREL_2 + barrel2);
 
         while (barrel1 + barrel2 != 0) {
+            if (isPlayer1) {
+                System.out.println(PLAYER_TURN + 1);
+            } else {
+                System.out.println(PLAYER_TURN + 2);
+            }
+
+            boolean validInput = false;
+            do {
+                String barrelSelect;
+                do {
+                    System.out.println(BARREL_CHOICE);
+                    barrelSelect = userIn.nextLine();
+                } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both"));
+
+                System.out.println(BISCUIT_QUANTITY);
+                while (!userIn.hasNextInt()) {
+                    System.out.println(INTEGER_ERROR);
+                    userIn.next();
+                }
+                int biscuitSelect = userIn.nextInt();
+
+                switch (barrelSelect) {
+                    case ("one"):
+                        if (biscuitSelect <= barrel1 && biscuitSelect > 0) {
+                            barrel1 -= biscuitSelect;
+                            validInput = true;
+                        } else {
+                            System.out.println(ILLEGAL_NUMBER);
+                        }
+                        break;
+                    case ("two"):
+                        if (biscuitSelect <= barrel2 && biscuitSelect > 0) {
+                            barrel2 -= biscuitSelect;
+                            validInput = true;
+                        } else {
+                            System.out.println(ILLEGAL_NUMBER);
+                        }
+                        break;
+                    case ("both"):
+                        if (biscuitSelect <= barrel1 && biscuitSelect <= barrel2 && biscuitSelect > 0) {
+                            barrel1 -= biscuitSelect;
+                            barrel2 -= biscuitSelect;
+                            validInput = true;
+                        } else {
+                            System.out.println(ILLEGAL_NUMBER);
+                        }
+                        break;
+                    default:
+                        validInput = false;
+                }
+                userIn.nextLine();
+            } while (!validInput);
+
             System.out.println(REMAINING_BARREL_1 + barrel1);
             System.out.println(REMAINING_BARREL_2 + barrel2);
-            System.out.println(PLAYER_TURN + player);
 
-            if (player == 1) {
-                do {
-                    System.out.println(BARREL_CHOICE);
-                    barrelSelect = userIn.nextLine();
-                    if (barrelSelect.equals("one")) {
-                        isBarrel1 = true;
-                        isBarrel2 = false;
-                    } else if (barrelSelect.equals("two")) {
-                        isBarrel1 = false;
-                        isBarrel2 = true;
-                    } else if (barrelSelect.equals("both")) {
-                        isBarrel1 = true;
-                        isBarrel2 = true;
-                    }
-                } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both"));
+            isPlayer1 = !isPlayer1;
+        }
 
-                System.out.println(BISCUIT_QUANTITY);
-
-                do {
-                    if (!userIn.hasNextInt()) {
-                        System.out.println(INTEGER_ERROR);
-                        userIn.next();
-                    }
-                } while (!userIn.hasNextInt());
-
-                biscuitSelect = userIn.nextInt();
-                if (isBarrel1 && !isBarrel2) {
-                    barrel1 -= biscuitSelect;
-                } else if (!isBarrel1 && isBarrel2) {
-                    barrel2 -= biscuitSelect;
-                } else if (isBarrel1 && isBarrel2) {
-                    barrel1 -= biscuitSelect;
-                    barrel2 -= biscuitSelect;
-                }
-                if (barrel1 + barrel2 == 0) {
-                    System.out.println(PLAYER_1_WINNER);
-                } else {
-                    player++;
-                    userIn.nextLine();
-                }
-            } else if (player == 2) {
-                do {
-                    System.out.println(BARREL_CHOICE);
-                    barrelSelect = userIn.nextLine();
-                    if (barrelSelect.equals("one")) {
-                        isBarrel1 = true;
-                        isBarrel2 = false;
-                    } else if (barrelSelect.equals("two")) {
-                        isBarrel1 = false;
-                        isBarrel2 = true;
-                    } else if (barrelSelect.equals("both")) {
-                        isBarrel1 = true;
-                        isBarrel2 = true;
-                    }
-                } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both"));
-
-                System.out.println(BISCUIT_QUANTITY);
-
-                do {
-                    if (!userIn.hasNextInt()) {
-                        System.out.println(INTEGER_ERROR);
-                        userIn.next();
-                    }
-                } while (!userIn.hasNextInt());
-
-                biscuitSelect = userIn.nextInt();
-                if (isBarrel1 && !isBarrel2) {
-                    barrel1 -= biscuitSelect;
-                } else if (!isBarrel1 && isBarrel2) {
-                    barrel2 -= biscuitSelect;
-                } else if (isBarrel1 && isBarrel2) {
-                    barrel1 -= biscuitSelect;
-                    barrel2 -= biscuitSelect;
-                }
-                if (barrel1 + barrel2 == 0) {
-                    System.out.println(PLAYER_2_WINNER);
-                } else {
-                    player--;
-                    userIn.nextLine();
-                }
-            }
+        if (isPlayer1) {
+            System.out.println(PLAYER_2_WINNER);
+        } else {
+            System.out.println(PLAYER_1_WINNER);
         }
     }
 }
