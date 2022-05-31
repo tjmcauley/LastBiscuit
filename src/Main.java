@@ -31,7 +31,7 @@ public class Main {
         //Scanner that will read both player's inputs
         Scanner userIn = new Scanner(System.in);
         String barrelSelect;
-        int biscuitSelect;
+        int biscuitSelect = 0;
         boolean isBarrel1 = false;
         boolean isBarrel2 = false;
 
@@ -57,6 +57,14 @@ public class Main {
                 } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both"));
 
                 System.out.println(BISCUIT_QUANTITY);
+
+                do {
+                    if (!userIn.hasNextInt()) {
+                        System.out.println(INTEGER_ERROR);
+                        userIn.next();
+                    }
+                } while (!userIn.hasNextInt());
+
                 biscuitSelect = userIn.nextInt();
                 if (isBarrel1 && !isBarrel2) {
                     barrel1 -= biscuitSelect;
@@ -69,12 +77,10 @@ public class Main {
                 if (barrel1 + barrel2 == 0) {
                     System.out.println(PLAYER_1_WINNER);
                 } else {
-                    player ++;
+                    player++;
                     userIn.nextLine();
                 }
-            }
-
-            else if (player == 2) {
+            } else if (player == 2) {
                 do {
                     System.out.println(BARREL_CHOICE);
                     barrelSelect = userIn.nextLine();
@@ -91,6 +97,14 @@ public class Main {
                 } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both"));
 
                 System.out.println(BISCUIT_QUANTITY);
+
+                do {
+                    if (!userIn.hasNextInt()) {
+                        System.out.println(INTEGER_ERROR);
+                        userIn.next();
+                    }
+                } while (!userIn.hasNextInt());
+
                 biscuitSelect = userIn.nextInt();
                 if (isBarrel1 && !isBarrel2) {
                     barrel1 -= biscuitSelect;
@@ -103,7 +117,7 @@ public class Main {
                 if (barrel1 + barrel2 == 0) {
                     System.out.println(PLAYER_2_WINNER);
                 } else {
-                    player --;
+                    player--;
                     userIn.nextLine();
                 }
             }
