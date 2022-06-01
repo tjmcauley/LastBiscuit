@@ -53,7 +53,7 @@ public class Main {
                     barrelSelect = userIn.nextLine();
                 } while (!barrelSelect.equals("one") && !barrelSelect.equals("two") && !barrelSelect.equals("both") && !barrelSelect.equals("skip"));
 
-                if (barrelSelect.equals("skip") && (isPlayer1 && player1SkipUsed) || (!isPlayer1 && player2SkipUsed)) {
+                if (barrelSelect.equals("skip") && (isPlayer1 && player1SkipUsed) || barrelSelect.equals("skip") && (!isPlayer1 && player2SkipUsed)) {
                     System.out.println(SKIP_USED);
                 } else if (barrelSelect.equals("skip") && isPlayer1) {
                     validInput = true;
@@ -98,6 +98,7 @@ public class Main {
                         default:
                             validInput = false;
                     }
+                    userIn.nextLine();
                 }
             } while (!validInput);
 
